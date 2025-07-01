@@ -1,23 +1,20 @@
-import path from 'path';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from 'webpack';
-import { buildPlugins } from './config/build/buildPlugins';
-import { buildLoaders } from './config/build/buildLoaders';
-import { buildResolvers } from './config/build/buildResolvers';
+import { buildWebpackConfig } from './config/build/buildWebpackConfig';
+import { BuildPaths } from './config/build/types/config';
+import path from 'path';
 
-const config: webpack.Configuration = {
-    mode: 'development',
+const paths: BuildPaths = {
     entry: path.resolve(__dirname, 'src', 'index.ts'),
-    output: {
-        filename: '[name].[contenthash].js',
-        path: path.resolve(__dirname, 'build'),
-        clean: true,
-    }, 
-    module: {
-        rules: buildLoaders(),
-    },
-    resolve: buildResolvers(),
-    plugins: buildPlugins(),
-};
+    build: path.resolve(__dirname, 'build'),
+    html: path.resolve(__dirname, 'public', 'index.html'),
+}
+
+const __PORT__ = 3000; 
+
+const config: webpack.Configuration = buildWebpackConfig({
+    mode: 'development',
+    paths,
+    port: __PORT__,
+});
 
 export default config
