@@ -18,6 +18,7 @@ let myArrayOfString: string[] = ['Hello', 'World'];
 let myArrayOfNumber: number[] = [1, 2, 3, 4];
 //  and e.t.c
 
+let otherArray: Array<number> = [1, 2, 3, 4, 5];
 
 let myMultipleTypesMassive: (string | number)[] = ['Age', 21];
 
@@ -169,7 +170,9 @@ enum GameState{
 console.log(GameState.Playing);
 console.log(GameState)
 
+let state: GameState = GameState.Finished;
 
+console.log(`Фаза игры: ${state}`)
 /* -------------------------------------------------------------------------- */
 /*                                  ReadOnly                                  */
 /* -------------------------------------------------------------------------- */
@@ -200,3 +203,96 @@ function myGeneric<T>(arg: T): T{
 }
 
 console.log(myGeneric(123))
+
+
+
+
+
+
+
+/* -------------------------------------------------------------------------- */
+/*                    Использование интерфейсов в массивах                    */
+/* -------------------------------------------------------------------------- */
+
+interface DateArray {
+    [index : number] : Date;
+}
+ 
+let arr1 : DateArray = [new Date, new Date()];
+
+console.log(arr1)
+
+
+/* -------------------------------------------------------------------------- */
+/*                                   Классы                                   */
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+/*                                  Protected                                 */
+/* -------------------------------------------------------------------------- */
+
+class Monster {
+    health : number;
+    protected name: string;
+ 
+    changeName(newName : string) {
+        this.name = newName; // OK. Внутри класса
+                             // protected полю доступно.
+    }
+}
+ 
+ 
+class Goblin extends Monster {
+    someMethod():string {
+        return 'name: ' + this.name; // OK. В наследниках есть доступ
+                                // к полю с модификатором 
+                                // protected
+    }
+}
+ 
+ 
+let m:Monster = new Monster();
+ 
+m.health = 100;   // OK
+console.log(m);
+m.changeName('Никита');
+
+console.log(m)
+
+let goblin:Goblin = new Goblin();
+goblin.health = 150; // OK
+
+goblin.changeName('Антон');
+console.log(goblin.someMethod());
+
+
+
+/* -------------------------------------------------------------------------- */
+/*                                  Readonly                                  */
+/* -------------------------------------------------------------------------- */
+class Hexadaemon {
+    readonly name :string = 'Hexadaemon monster';
+    readonly numberOfEyes : number = 12;
+}
+ 
+let v1 : Hexadaemon = new Hexadaemon();
+console.log(v1);
+
+
+/* -------------------------------------------------------------------------- */
+/*                                   Static                                   */
+/* -------------------------------------------------------------------------- */
+class Monster1 {
+    health : number;
+    static totalMonstersCount: number = 0;
+ 
+    constructor(health : number) {
+        this.health = health;
+        Monster1.totalMonstersCount++;
+    }
+}
+ 
+let m1 : Monster1 = new Monster1(98);
+let m2 : Monster1 = new Monster1(150);
+let m3 : Monster1 = new Monster1(45);
+ 
+console.log(Monster1.totalMonstersCount); // 3
